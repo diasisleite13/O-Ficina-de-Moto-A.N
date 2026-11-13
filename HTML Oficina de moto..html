@@ -1,0 +1,1105 @@
+HTML Oficina de moto. <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MotoTech Garage | Oficina Especializada & Motopeças</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Chakra Petch (Esportivo/Mecânico) & Plus Jakarta Sans (Leitura limpa) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,600;0,700;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Configuração Personalizada do Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        asphalt: '#0F172A',
+                        graphite: '#1E293B',
+                        steel: '#334155',
+                        racingOrange: {
+                            DEFAULT: '#F97316',
+                            light: '#FB923C',
+                            dark: '#EA580C',
+                            muted: 'rgba(249, 115, 22, 0.14)'
+                        },
+                        techCyan: {
+                            DEFAULT: '#38BDF8',
+                            dark: '#0284C7',
+                            muted: 'rgba(56, 189, 248, 0.14)'
+                        },
+                        emeraldReady: {
+                            DEFAULT: '#10B981',
+                            dark: '#059669',
+                            muted: 'rgba(16, 185, 129, 0.14)'
+                        },
+                        slateLight: '#F8FAFC',
+                        slateMuted: '#94A3B8'
+                    },
+                    fontFamily: {
+                        racing: ['"Chakra Petch"', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos base e refinamentos visuais Industrial / Motorsport */
+        body {
+            background-color: #0F172A;
+            color: #F8FAFC;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            color-scheme: dark;
+        }
+
+        h1, h2, h3, .font-moto {
+            font-family: 'Chakra Petch', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        /* Animações suaves */
+        .fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F172A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F97316;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pb-24 md:pb-12">
+
+    <!-- =====================================================================
+         CABEÇALHO SUPERIOR (DESKTOP & MOBILE)
+         ===================================================================== -->
+    <header class="bg-graphite/95 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+            <!-- Identidade da Oficina -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('agendar')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-racingOrange to-racingOrange-dark flex items-center justify-center text-white shadow-lg shadow-racingOrange/20">
+                    <i class="fa-solid fa-motorcycle text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold text-slateLight uppercase italic leading-tight">MotoTech Garage</h1>
+                    <p class="text-[11px] sm:text-xs text-techCyan font-semibold uppercase tracking-widest">Oficina Especializada • Diagnóstico & Alta Performance</p>
+                </div>
+            </div>
+
+            <!-- Navegação Desktop -->
+            <nav class="hidden md:flex items-center gap-1.5 bg-asphalt p-1.5 rounded-2xl border border-slate-800">
+                <button onclick="switchTab('agendar')" id="nav-desk-agendar" class="nav-desk-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-wrench"></i> Agendar Serviço
+                </button>
+                <button onclick="switchTab('meus')" id="nav-desk-meus" class="nav-desk-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-list"></i> Minhas Ordens
+                </button>
+                <button onclick="switchTab('admin')" id="nav-desk-admin" class="nav-desk-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-gauge-high text-xs"></i> Painel da Oficina
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- =====================================================================
+         CONTEÚDO PRINCIPAL
+         ===================================================================== -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 pt-6">
+
+        <!-- =================================================================
+             TELA 1: AGENDAR SERVIÇO (ÁREA DO MOTOCICLISTA)
+             ================================================================= -->
+        <section id="view-agendar" class="fade-in space-y-8">
+            <!-- Banner Hero Motorsport -->
+            <div class="bg-gradient-to-r from-graphite via-asphalt to-graphite rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative overflow-hidden">
+                <div class="space-y-2 max-w-xl relative z-10">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-racingOrange-muted text-racingOrange-light border border-racingOrange/30">
+                        <i class="fa-solid fa-bolt"></i> Box Rápido & Mecânica de Precisão
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-bold text-slateLight uppercase italic leading-tight">Sua moto revisada e pronta para rodar com segurança</h2>
+                    <p class="text-sm text-slateMuted">Escolha os serviços de manutenção, agende o horário do seu box e acompanhe o status da sua Ordem de Serviço online.</p>
+                </div>
+                <div class="hidden sm:flex items-center gap-3 bg-asphalt/90 px-4 py-3.5 rounded-2xl border border-slate-700/80 text-xs text-slateMuted relative z-10">
+                    <i class="fa-solid fa-microchip text-techCyan text-2xl"></i>
+                    <div>
+                        <p class="font-bold text-slateLight">Scanner Injeção Eletrônica</p>
+                        <p>Diagnóstico multimarcas completo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 1: Catálogo de Serviços -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-racingOrange-light">Passo 1 de 3</span>
+                        <h3 class="text-2xl font-bold text-slateLight uppercase">Selecione os Serviços</h3>
+                    </div>
+
+                    <!-- Filtro de Categorias -->
+                    <div class="flex flex-wrap items-center gap-1.5 bg-graphite p-1.5 rounded-2xl border border-slate-800 self-start">
+                        <button onclick="filterCategory('todos')" id="cat-btn-todos" class="cat-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-racingOrange text-white">
+                            Todos
+                        </button>
+                        <button onclick="filterCategory('revisao')" id="cat-btn-revisao" class="cat-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all text-slateMuted hover:text-slateLight">
+                            <i class="fa-solid fa-oil-can mr-1 text-racingOrange-light"></i> Revisão & Óleo
+                        </button>
+                        <button onclick="filterCategory('motor')" id="cat-btn-motor" class="cat-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all text-slateMuted hover:text-slateLight">
+                            <i class="fa-solid fa-gears mr-1 text-techCyan"></i> Motor, Injeção & Elétrica
+                        </button>
+                        <button onclick="filterCategory('pneus')" id="cat-btn-pneus" class="cat-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all text-slateMuted hover:text-slateLight">
+                            <i class="fa-solid fa-dharmachakra mr-1 text-emeraldReady"></i> Pneus & Suspensão
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grid de Cards de Serviços -->
+                <div id="services-catalog-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Renderizado dinamicamente via JS -->
+                </div>
+            </div>
+
+            <!-- Passo 2: Data e Horário do Box -->
+            <div id="step-datetime" class="bg-graphite rounded-3xl p-6 sm:p-7 border border-slate-800 shadow-md space-y-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-racingOrange-light">Passo 2 de 3</span>
+                    <h3 class="text-2xl font-bold text-slateLight uppercase">Data e Horário de Entrada no Box</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                    <!-- Seletor de Data -->
+                    <div class="md:col-span-5 space-y-3">
+                        <label class="block text-sm font-semibold text-slateLight">Selecione o dia:</label>
+                        <input type="date" id="booking-date" onchange="handleDateChange()" class="w-full px-4 py-3 rounded-2xl border border-slate-700 bg-asphalt text-slateLight font-medium focus:outline-none focus:ring-2 focus:ring-racingOrange">
+                        
+                        <!-- Atalhos rápidos -->
+                        <div class="flex gap-2">
+                            <button type="button" onclick="setQuickDate(0)" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-racingOrange-muted text-racingOrange-light border border-racingOrange/30 hover:bg-racingOrange hover:text-white transition-colors">
+                                Hoje
+                            </button>
+                            <button type="button" onclick="setQuickDate(1)" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold bg-asphalt text-slateMuted border border-slate-700 hover:border-racingOrange hover:text-slateLight transition-colors">
+                                Amanhã
+                            </button>
+                        </div>
+                        <p id="selected-date-label" class="text-xs text-slateMuted font-medium pt-1"></p>
+                    </div>
+
+                    <!-- Grade de Horários (08:00 às 17:00) -->
+                    <div class="md:col-span-7 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-sm font-semibold text-slateLight">Horários disponíveis (08:00 às 17:00):</label>
+                            <span class="text-[11px] text-slateMuted flex items-center gap-2">
+                                <span class="inline-block w-2.5 h-2.5 rounded-full bg-slate-700"></span> Box Ocupado
+                                <span class="inline-block w-2.5 h-2.5 rounded-full bg-racingOrange"></span> Selecionado
+                            </span>
+                        </div>
+                        
+                        <div id="time-slots-grid" class="grid grid-cols-3 sm:grid-cols-5 gap-2.5">
+                            <!-- Renderizado via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 3: Dados do Motociclista e da Motocicleta -->
+            <div id="step-client-info" class="bg-graphite rounded-3xl p-6 sm:p-7 border border-slate-800 shadow-md space-y-5">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-racingOrange-light">Passo 3 de 3</span>
+                    <h3 class="text-2xl font-bold text-slateLight uppercase">Dados do Piloto e da Moto</h3>
+                </div>
+
+                <form id="booking-form" onsubmit="submitBooking(event)" class="space-y-4">
+                    <!-- Dados Pessoais -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="client-name" class="block text-sm font-semibold text-slateLight mb-1.5">Nome Completo *</label>
+                            <div class="relative">
+                                <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slateMuted"></i>
+                                <input type="text" id="client-name" required placeholder="Ex: Carlos Eduardo" class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-700 bg-asphalt text-slateLight focus:outline-none focus:ring-2 focus:ring-racingOrange text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="client-phone" class="block text-sm font-semibold text-slateLight mb-1.5">WhatsApp / Telefone *</label>
+                            <div class="relative">
+                                <i class="fa-brands fa-whatsapp absolute left-4 top-1/2 -translate-y-1/2 text-emeraldReady text-base"></i>
+                                <input type="tel" id="client-phone" required placeholder="(00) 00000-0000" maxlength="15" oninput="maskPhone(this)" class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-700 bg-asphalt text-slateLight focus:outline-none focus:ring-2 focus:ring-racingOrange text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dados Específicos da Motocicleta -->
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                        <div class="sm:col-span-6">
+                            <label for="moto-model" class="block text-sm font-semibold text-slateLight mb-1.5">Modelo / Ano da Moto *</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-motorcycle absolute left-4 top-1/2 -translate-y-1/2 text-racingOrange-light text-sm"></i>
+                                <input type="text" id="moto-model" required placeholder="Ex: Honda CG 160 Titan 2022" class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-700 bg-asphalt text-slateLight focus:outline-none focus:ring-2 focus:ring-racingOrange text-sm">
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="moto-plate" class="block text-sm font-semibold text-slateLight mb-1.5">
+                                Placa <span class="text-slateMuted font-normal text-xs">(Opcional)</span>
+                            </label>
+                            <input type="text" id="moto-plate" maxlength="8" placeholder="ABC-1D23" oninput="this.value = this.value.toUpperCase()" class="w-full px-4 py-3 rounded-2xl border border-slate-700 bg-asphalt text-slateLight uppercase font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-racingOrange text-sm">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="moto-km" class="block text-sm font-semibold text-slateLight mb-1.5">
+                                KM Atual <span class="text-slateMuted font-normal text-xs">(Opcional)</span>
+                            </label>
+                            <input type="number" id="moto-km" min="0" placeholder="Ex: 24500" class="w-full px-4 py-3 rounded-2xl border border-slate-700 bg-asphalt text-slateLight focus:outline-none focus:ring-2 focus:ring-racingOrange text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Relato Técnico -->
+                    <div>
+                        <label for="client-notes" class="block text-sm font-semibold text-slateLight mb-1.5">
+                            Relato do Problema / Observações Técnicas <span class="text-slateMuted font-normal">(Opcional)</span>
+                        </label>
+                        <textarea id="client-notes" rows="2" placeholder="Ex: Barulho metálico na relação ao acelerar, moto falhando em baixa rotação, freio dianteiro rangendo..." class="w-full px-4 py-3 rounded-2xl border border-slate-700 bg-asphalt text-slateLight focus:outline-none focus:ring-2 focus:ring-racingOrange text-sm"></textarea>
+                    </div>
+
+                    <!-- Resumo Pré-OS antes de confirmar -->
+                    <div id="booking-summary-box" class="bg-asphalt rounded-2xl p-4 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="space-y-1">
+                            <p class="text-xs font-semibold text-slateMuted uppercase">Prévia da Ordem de Serviço</p>
+                            <p id="summary-services-text" class="text-sm font-bold text-slateLight">Nenhum serviço selecionado</p>
+                            <p id="summary-datetime-text" class="text-xs text-techCyan font-semibold">Selecione data e horário acima</p>
+                        </div>
+                        <div class="text-left sm:text-right">
+                            <p class="text-xs text-slateMuted">Orçamento Estimado (A partir de)</p>
+                            <p id="summary-total-price" class="text-2xl font-bold text-emeraldReady">R$ 0,00</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-racingOrange to-racingOrange-dark hover:brightness-110 text-white font-extrabold uppercase tracking-wider text-sm sm:text-base shadow-lg shadow-racingOrange/20 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-file-signature"></i> Gerar Ordem de Serviço & Agendar
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Barra Flutuante de Resumo (Aparece ao selecionar serviços na tela Agendar) -->
+        <div id="floating-combo-bar" class="hidden fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-2xl bg-graphite text-slateLight px-5 py-3.5 rounded-2xl shadow-2xl z-30 flex items-center justify-between gap-4 border border-racingOrange/50">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-racingOrange text-white flex items-center justify-center font-extrabold text-sm" id="combo-count-badge">0</div>
+                <div>
+                    <p class="text-xs text-slateMuted" id="combo-duration-text">0 min estimados no box</p>
+                    <p class="text-sm font-bold text-slateLight" id="combo-price-text">Estimado: R$ 0,00</p>
+                </div>
+            </div>
+            <button onclick="scrollToDateTime()" class="px-4 py-2 rounded-xl bg-emeraldReady hover:bg-emeraldReady-dark text-asphalt text-xs sm:text-sm font-extrabold transition-colors flex items-center gap-1.5">
+                Agendar Box <i class="fa-solid fa-arrow-down"></i>
+            </button>
+        </div>
+
+        <!-- =================================================================
+             TELA 2: MINHAS ORDENS / AGENDAMENTOS (CONSULTA DO CLIENTE)
+             ================================================================= -->
+        <section id="view-meus" class="hidden fade-in space-y-6 max-w-2xl mx-auto">
+            <div class="text-center space-y-2 pt-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-techCyan-muted text-techCyan border border-techCyan/30">
+                    <i class="fa-solid fa-radar"></i> Rastreio de Box
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slateLight uppercase">Minhas Ordens de Serviço</h2>
+                <p class="text-sm text-slateMuted">Digite seu número de WhatsApp ou a placa da sua moto para acompanhar o status da manutenção.</p>
+            </div>
+
+            <!-- Formulário de Busca por Telefone ou Placa -->
+            <div class="bg-graphite p-5 sm:p-6 rounded-3xl border border-slate-800 shadow-md">
+                <form onsubmit="searchClientAppointments(event)" class="flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-techCyan text-base"></i>
+                        <input type="text" id="search-client-query" required placeholder="WhatsApp (00) 00000-0000 ou Placa ABC-1D23" class="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-slate-700 bg-asphalt text-slateLight focus:outline-none focus:ring-2 focus:ring-techCyan text-sm font-medium">
+                    </div>
+                    <button type="submit" class="px-6 py-3.5 rounded-2xl bg-racingOrange hover:bg-racingOrange-light text-white font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-search"></i> Consultar OS
+                    </button>
+                </form>
+            </div>
+
+            <!-- Lista de Resultados do Cliente -->
+            <div id="client-appointments-results" class="space-y-4">
+                <div class="text-center py-10 text-slateMuted text-sm">
+                    <i class="fa-solid fa-motorcycle text-3xl mb-2 block text-slate-600"></i>
+                    Informe seu WhatsApp ou a placa da moto acima para consultar suas ordens.
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================================
+             TELA 3: PAINEL DA OFICINA (ÁREA DO DONO / MECÂNICO)
+             ================================================================= -->
+        <section id="view-admin" class="hidden fade-in space-y-6">
+            
+            <!-- Tela de Login do Mecânico / Dono -->
+            <div id="admin-login-box" class="max-w-md mx-auto bg-graphite p-7 rounded-3xl border border-slate-800 shadow-xl text-center space-y-5 mt-6">
+                <div class="w-14 h-14 rounded-2xl bg-racingOrange-muted text-racingOrange-light border border-racingOrange/30 mx-auto flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slateLight uppercase">Painel da Oficina</h2>
+                    <p class="text-xs text-slateMuted mt-1">Acesso restrito ao chefe de oficina e mecânicos para gestão de boxes e OS.</p>
+                </div>
+                <form onsubmit="handleAdminLogin(event)" class="space-y-4 text-left">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slateMuted mb-1.5">Senha de Acesso</label>
+                        <input type="password" id="admin-password-input" required placeholder="Digite a senha (padrão: 1234)" class="w-full px-4 py-3 rounded-2xl border border-slate-700 bg-asphalt text-slateLight focus:outline-none focus:ring-2 focus:ring-racingOrange text-center tracking-widest font-bold">
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-2xl bg-racingOrange hover:bg-racingOrange-light text-white font-extrabold uppercase tracking-wider text-sm transition-colors">
+                        Acessar Boxes & OS
+                    </button>
+                </form>
+            </div>
+
+            <!-- Conteúdo Autenticado do Painel da Oficina -->
+            <div id="admin-dashboard-content" class="hidden space-y-6">
+                <!-- Cabeçalho do Painel -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-graphite p-5 rounded-3xl border border-slate-800">
+                    <div>
+                        <span class="text-xs font-bold text-techCyan uppercase tracking-widest">Controle de Boxes & OS</span>
+                        <h2 class="text-2xl font-bold text-slateLight uppercase">Painel MotoTech Garage</h2>
+                    </div>
+                    <button onclick="logoutAdmin()" class="self-start sm:self-auto px-4 py-2 rounded-xl border border-slate-700 text-slateMuted hover:bg-red-950/60 hover:text-red-400 hover:border-red-800 text-xs font-semibold transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sair do Painel
+                    </button>
+                </div>
+
+                <!-- Cards de Métricas (Dashboard Resumido) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-graphite p-5 rounded-3xl border border-slate-800 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-racingOrange-muted text-racingOrange-light flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-motorcycle"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-slateMuted">Motos Agendadas Hoje</p>
+                            <p id="stat-today-count" class="text-2xl font-bold text-slateLight">0</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-graphite p-5 rounded-3xl border border-slate-800 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-emeraldReady-muted text-emeraldReady flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-sack-dollar"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-slateMuted">Faturamento Previsto (Hoje)</p>
+                            <p id="stat-today-revenue" class="text-2xl font-bold text-emeraldReady">R$ 0,00</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-graphite p-5 rounded-3xl border border-slate-800 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-techCyan-muted text-techCyan flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-flag-checkered"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-slateMuted">Serviços Concluídos</p>
+                            <p id="stat-completed-count" class="text-2xl font-bold text-slateLight">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-navegação Interna do Painel -->
+                <div class="flex overflow-x-auto gap-2 bg-graphite p-1.5 rounded-2xl border border-slate-800">
+                    <button onclick="switchAdminSubtab('agenda')" id="subtab-btn-agenda" class="admin-subtab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap bg-racingOrange text-white transition-all">
+                        <i class="fa-solid fa-wrench mr-1.5"></i> Agenda & Controle de Box
+                    </button>
+                    <button onclick="switchAdminSubtab('servicos')" id="subtab-btn-servicos" class="admin-subtab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap text-slateMuted hover:text-slateLight transition-all">
+                        <i class="fa-solid fa-gears mr-1.5"></i> Serviços & Mão de Obra
+                    </button>
+                    <button onclick="switchAdminSubtab('bloqueios')" id="subtab-btn-bloqueios" class="admin-subtab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap text-slateMuted hover:text-slateLight transition-all">
+                        <i class="fa-solid fa-ban mr-1.5"></i> Bloqueios de Box
+                    </button>
+                </div>
+
+                <!-- SUB-ABA 1: AGENDA & CONTROLE DE BOX -->
+                <div id="admin-sub-agenda" class="space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 bg-graphite p-4 rounded-2xl border border-slate-800">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button onclick="setAdminAgendaFilter('today')" id="filter-ag-today" class="ag-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-techCyan text-asphalt">Hoje</button>
+                            <button onclick="setAdminAgendaFilter('tomorrow')" id="filter-ag-tomorrow" class="ag-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-asphalt text-slateMuted hover:text-slateLight">Amanhã</button>
+                            <button onclick="setAdminAgendaFilter('all')" id="filter-ag-all" class="ag-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-asphalt text-slateMuted hover:text-slateLight">Todas as OS</button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs font-semibold text-slateMuted">Data:</label>
+                            <input type="date" id="admin-filter-date" onchange="setAdminAgendaFilter('custom')" class="px-3 py-1.5 rounded-xl border border-slate-700 text-xs bg-asphalt text-slateLight">
+                        </div>
+                    </div>
+
+                    <div id="admin-appointments-list" class="space-y-3">
+                        <!-- Lista de OS renderizada via JS -->
+                    </div>
+                </div>
+
+                <!-- SUB-ABA 2: GERENCIADOR DE SERVIÇOS (CRUD) -->
+                <div id="admin-sub-servicos" class="hidden space-y-5">
+                    <!-- Formulário Adicionar / Editar Serviço -->
+                    <div class="bg-graphite p-5 sm:p-6 rounded-3xl border border-slate-800 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 id="service-form-title" class="text-xl font-bold text-slateLight uppercase">Adicionar Novo Serviço de Mecânica</h3>
+                            <button type="button" id="cancel-edit-service-btn" onclick="resetServiceForm()" class="hidden text-xs text-red-400 font-semibold hover:underline">Cancelar Edição</button>
+                        </div>
+                        
+                        <form onsubmit="saveServiceForm(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-3.5">
+                            <input type="hidden" id="edit-service-id">
+                            
+                            <div class="sm:col-span-5">
+                                <label class="block text-xs font-semibold text-slateMuted mb-1">Nome do Serviço *</label>
+                                <input type="text" id="srv-name" required placeholder="Ex: Troca de Kit Relação + Lubrificação" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-asphalt text-slateLight text-sm">
+                            </div>
+
+                            <div class="sm:col-span-3">
+                                <label class="block text-xs font-semibold text-slateMuted mb-1">Categoria *</label>
+                                <select id="srv-category" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-asphalt text-slateLight text-sm">
+                                    <option value="revisao">Revisão & Troca de Óleo</option>
+                                    <option value="motor">Motor, Injeção & Elétrica</option>
+                                    <option value="pneus">Pneus & Suspensão</option>
+                                </select>
+                            </div>
+
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-slateMuted mb-1">A partir de (R$) *</label>
+                                <input type="number" id="srv-price" required step="0.01" min="1" placeholder="80.00" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-asphalt text-slateLight text-sm">
+                            </div>
+
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-slateMuted mb-1">Tempo Box (min) *</label>
+                                <input type="number" id="srv-duration" required step="5" min="10" placeholder="45" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-asphalt text-slateLight text-sm">
+                            </div>
+
+                            <div class="sm:col-span-9">
+                                <label class="block text-xs font-semibold text-slateMuted mb-1">Descrição Técnica *</label>
+                                <input type="text" id="srv-desc" required placeholder="Detalhes da mão de obra, peças inclusas ou especificações..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-asphalt text-slateLight text-sm">
+                            </div>
+
+                            <div class="sm:col-span-3 flex items-end">
+                                <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-emeraldReady hover:bg-emeraldReady-dark text-asphalt font-extrabold text-sm transition-colors">
+                                    <i class="fa-solid fa-floppy-disk mr-1"></i> Salvar Serviço
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Lista de Serviços Cadastrados -->
+                    <div id="admin-services-list" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                        <!-- Renderizado via JS -->
+                    </div>
+                </div>
+
+                <!-- SUB-ABA 3: BLOQUEIOS DE AGENDA / BOX -->
+                <div id="admin-sub-bloqueios" class="hidden space-y-5">
+                    <div class="bg-graphite p-5 sm:p-6 rounded-3xl border border-slate-800 space-y-4">
+                        <h3 class="text-xl font-bold text-slateLight uppercase">Bloquear Data ou Horário do Box</h3>
+                        <p class="text-xs text-slateMuted">Bloqueie horários de almoço, feriados ou dias reservados exclusivamente para serviços longos de motor.</p>
+                        
+                        <form onsubmit="addScheduleBlock(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-3.5">
+                            <div class="sm:col-span-4">
+                                <label class="block text-xs font-semibold text-slateMuted mb-1">Data *</label>
+                                <input type="date" id="block-date" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-asphalt text-slateLight text-sm">
+                            </div>
+
+                            <div class="sm:col-span-4">
+                                <label class="block text-xs font-semibold text-slateMuted mb-1">Horário *</label>
+                                <select id="block-time" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-asphalt text-slateLight text-sm">
+                                    <option value="ALL">Dia Inteiro (Oficina Fechada)</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                </select>
+                            </div>
+
+                            <div class="sm:col-span-4 flex items-end">
+                                <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-racingOrange hover:bg-racingOrange-light text-white font-bold text-sm transition-colors">
+                                    <i class="fa-solid fa-lock mr-1"></i> Aplicar Bloqueio
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="bg-graphite p-5 rounded-3xl border border-slate-800 space-y-3">
+                        <h4 class="text-sm font-bold text-slateLight uppercase">Bloqueios Ativos na Agenda</h4>
+                        <div id="admin-blocks-list" class="space-y-2">
+                            <!-- Renderizado via JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =====================================================================
+         BARRA DE NAVEGAÇÃO INFERIOR (MOBILE-FIRST)
+         ===================================================================== -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-graphite border-t border-slate-800 px-2 py-2 flex justify-around items-center z-40 shadow-[0_-4px_16px_rgba(0,0,0,0.45)]">
+        <button onclick="switchTab('agendar')" id="nav-mob-agendar" class="nav-mob-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-racingOrange-light font-bold text-[11px]">
+            <i class="fa-solid fa-wrench text-lg"></i>
+            <span>Agendar</span>
+        </button>
+        <button onclick="switchTab('meus')" id="nav-mob-meus" class="nav-mob-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-slateMuted font-medium text-[11px]">
+            <i class="fa-solid fa-clipboard-list text-lg"></i>
+            <span>Minhas OS</span>
+        </button>
+        <button onclick="switchTab('admin')" id="nav-mob-admin" class="nav-mob-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-slateMuted font-medium text-[11px]">
+            <i class="fa-solid fa-gauge-high text-lg"></i>
+            <span>Oficina</span>
+        </button>
+    </nav>
+
+    <!-- =====================================================================
+         MODAL DE ORDEM DE SERVIÇO (OS) & ENVIO WHATSAPP
+         ===================================================================== -->
+    <div id="success-modal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-graphite border border-slate-700 rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-5 fade-in relative">
+            <button onclick="closeSuccessModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-asphalt text-slateMuted hover:text-slateLight flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center space-y-2">
+                <div class="w-16 h-16 rounded-full bg-emeraldReady-muted text-emeraldReady border border-emeraldReady/30 mx-auto flex items-center justify-center text-3xl">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slateLight uppercase">Box Reservado!</h3>
+                <p class="text-xs text-slateMuted">Sua Ordem de Serviço foi registrada no sistema da oficina.</p>
+            </div>
+
+            <!-- Comprovante Estilo OS -->
+            <div id="receipt-details" class="bg-asphalt rounded-2xl p-4 border border-dashed border-slate-700 space-y-2.5 text-sm">
+                <!-- Preenchido via JS -->
+            </div>
+
+            <div class="space-y-2.5 pt-1">
+                <a id="whatsapp-share-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 px-5 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-asphalt font-extrabold text-sm shadow-md flex items-center justify-center gap-2 transition-colors">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Enviar Agendamento pelo WhatsApp
+                </a>
+                <button onclick="closeSuccessModal()" class="w-full py-3 rounded-2xl bg-asphalt hover:bg-slate-800 text-slateMuted font-semibold text-xs transition-colors">
+                    Concluir e Voltar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL DE CONFIRMAÇÃO GENÉRICO (SUBSTITUI confirm() NATIVO)
+         ===================================================================== -->
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-graphite border border-slate-700 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 fade-in text-center">
+            <div class="w-12 h-12 rounded-2xl bg-red-500/15 text-red-400 mx-auto flex items-center justify-center text-xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 id="confirm-modal-title" class="text-lg font-bold text-slateLight uppercase">Confirmar Ação</h3>
+            <p id="confirm-modal-desc" class="text-xs text-slateMuted">Tem certeza que deseja continuar?</p>
+            <div class="flex gap-2.5 pt-2">
+                <button onclick="closeConfirmModal()" class="flex-1 py-2.5 rounded-xl bg-asphalt text-slateMuted font-semibold text-xs hover:text-slateLight">Voltar</button>
+                <button id="confirm-modal-yes-btn" class="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-bold text-xs hover:bg-red-500">Sim, Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         CONTAINER DE NOTIFICAÇÕES TOAST
+         ===================================================================== -->
+    <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none"></div>
+
+    <!-- =====================================================================
+         JAVASCRIPT INTEGRADO (LÓGICA, ESTADO E LOCALSTORAGE)
+         ===================================================================== -->
+    <script>
+        /**
+         * ===================================================================
+         * CONFIGURAÇÕES DA OFICINA (EDITE AQUI FACILMENTE)
+         * ===================================================================
+         */
+        const SHOP_CONFIG = {
+            name: "MotoTech Garage",
+            // Número de WhatsApp da Oficina (apenas números: 55 + DDD + Número)
+            whatsappNumber: "5584999999999", 
+            // Senha de acesso ao Painel da Oficina
+            adminPassword: "1234",
+            // Horários padrão de atendimento do box (08:00 às 17:00)
+            workingHours: [
+                "08:00", "09:00", "10:00", "11:00", "12:00",
+                "13:00", "14:00", "15:00", "16:00", "17:00"
+            ]
+        };
+
+        /**
+         * Chaves de armazenamento exclusivas no localStorage
+         */
+        const STORAGE_KEYS = {
+            SERVICES: 'mototech_services',
+            BOOKINGS: 'mototech_bookings',
+            BLOCKS: 'mototech_blocks',
+            ADMIN_AUTH: 'mototech_admin_logged'
+        };
+
+        /**
+         * Estado global da aplicação em memória
+         */
+        let state = {
+            services: [],
+            bookings: [],
+            blocks: [],
+            selectedServiceIds: [],
+            selectedDate: '',
+            selectedTime: '',
+            currentCategoryFilter: 'todos',
+            adminAgendaFilter: 'today',
+            isAdminLogged: false
+        };
+
+        /**
+         * ===================================================================
+         * UTILITÁRIOS DE DATA E FORMATAÇÃO
+         * ===================================================================
+         */
+        function getTodayStr(offsetDays = 0) {
+            const d = new Date();
+            d.setDate(d.getDate() + offsetDays);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatDateBR(isoDateStr) {
+            if (!isoDateStr) return '';
+            const [y, m, d] = isoDateStr.split('-');
+            return `${d}/${m}/${y}`;
+        }
+
+        function formatCurrency(val) {
+            return Number(val).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function maskPhone(input) {
+            let v = input.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            if (v.length > 6) {
+                input.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+            } else if (v.length > 2) {
+                input.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+            } else if (v.length > 0) {
+                input.value = `(${v}`;
+            }
+        }
+
+        function cleanPhone(phoneStr) {
+            return (phoneStr || '').replace(/\D/g, '');
+        }
+
+        /**
+         * ===================================================================
+         * INICIALIZAÇÃO E DADOS PRÉ-POPULADOS (SEED)
+         * ===================================================================
+         */
+        function initData() {
+            const savedServices = localStorage.getItem(STORAGE_KEYS.SERVICES);
+            const savedBookings = localStorage.getItem(STORAGE_KEYS.BOOKINGS);
+            const savedBlocks = localStorage.getItem(STORAGE_KEYS.BLOCKS);
+
+            if (savedServices) {
+                state.services = JSON.parse(savedServices);
+            } else {
+                // Catálogo inicial completo da Oficina de Motos
+                state.services = [
+                    {
+                        id: 'mt-1',
+                        name: 'Troca de Óleo e Filtro',
+                        category: 'revisao',
+                        price: 65.00,
+                        duration: 30,
+                        desc: 'Drenagem completa do lubrificante usado, substituição do filtro de óleo, inspeção de nível e aperto com torquímetro.',
+                        active: true
+                    },
+                    {
+                        id: 'mt-2',
+                        name: 'Revisão Geral Preventiva',
+                        category: 'revisao',
+                        price: 220.00,
+                        duration: 150,
+                        desc: 'Check-up de 25 itens: lubrificação de cabos e rolamentos, regulagem de válvulas, limpeza de filtro de ar e reaperto geral.',
+                        active: true
+                    },
+                    {
+                        id: 'mt-3',
+                        name: 'Limpeza e Lubrificação de Relação',
+                        category: 'revisao',
+                        price: 45.00,
+                        duration: 30,
+                        desc: 'Desengraxe técnico da corrente, coroa e pinhão, ajuste de folga padrão fábrica e lubrificação com graxa branca/Motul.',
+                        active: true
+                    },
+                    {
+                        id: 'mt-4',
+                        name: 'Revisão de Freios (Pastilhas / Lonas)',
+                        category: 'revisao',
+                        price: 75.00,
+                        duration: 45,
+                        desc: 'Troca de pastilhas ou lonas de freio, limpeza das pinças, inspeção de disco e sangria do fluido hidráulico DOT 4.',
+                        active: true
+                    },
+                    {
+                        id: 'mt-5',
+                        name: 'Limpeza de Bico Injetor / TBI',
+                        category: 'motor',
+                        price: 110.00,
+                        duration: 60,
+                        desc: 'Descarbonização do corpo de borboleta (TBI), teste de vazão e limpeza ultrassônica do bico injetor para retomada imediata.',
+                        active: true
+                    },
+                    {
+                        id: 'mt-6',
+                        name: 'Diagnóstico via Scanner Eletrônico',
+                        category: 'motor',
+                        price: 80.00,
+                        duration: 40,
+                        desc: 'Leitura computadorizada da central (ECU), leitura de sensores, apagamento de códigos de falha e reset de parâmetros.',
+                        active: true
+                    },
+                    {
+                        id: 'mt-7',
+                        name: 'Troca de Kit Embreagem',
+                        category: 'motor',
+                        price: 190.00,
+                        duration: 120,
+                        desc: 'Substituição dos discos, separadores e molas de embreagem, limpeza da peneira de óleo e junta nova da tampa.',
+                        active: true
+                    },
+                    {
+                        id: 'mt-8',
+                        name: 'Parte Elétrica & Teste de Bateria',
+                        category: 'motor',
+                        price: 70.00,
+                        duration: 45,
+                        desc: 'Teste de carga do estator, retificador, bateria, revisão de chicote, iluminação LED e partida elétrica.',
+                        active: true
+                    },
+                    {
+                        id: 'mt-9',
+                        name: 'Troca de Pneu e Balanceamento',
+                        category: 'pneus',
+                        price: 55.00,
+                        duration: 40,
+                        desc: 'Desmontagem sem marcar o aro, montagem com lubrificante técnico, calibragem precisa e balanceamento de roda.',
+                        active: true
+                    },
+                    {
+                        id: 'mt-10',
+                        name: 'Revisão de Suspensão Dianteira',
+                        category: 'pneus',
+                        price: 160.00,
+                        duration: 90,
+                        desc: 'Desmontagem das bengalas, troca de retentores, guarda-pós e substituição do fluido hidráulico Fork Oil na medida exata.',
+                        active: true
+                    },
+                    {
+                        id: 'mt-11',
+                        name: 'Alinhamento de Rodas e Direção',
+                        category: 'pneus',
+                        price: 85.00,
+                        duration: 50,
+                        desc: 'Verificação e ajuste da caixa de direção, alinhamento de mesa, bengalas e balança traseira para estabilidade total.',
+                        active: true
+                    }
+                ];
+                saveServicesToStorage();
+            }
+
+            if (savedBookings) {
+                state.bookings = JSON.parse(savedBookings);
+            } else {
+                // Exemplos pré-populados na primeira abertura
+                const today = getTodayStr(0);
+                state.bookings = [
+                    {
+                        id: 'os-mt-101',
+                        osNumber: 'OS-101',
+                        clientName: 'Bruno Almeida',
+                        clientPhone: '(84) 99944-1122',
+                        motoModel: 'Yamaha Fazer 250 ABS 2023',
+                        motoPlate: 'RGH-4E21',
+                        motoKm: '18500',
+                        date: today,
+                        time: '09:00',
+                        serviceIds: ['mt-1', 'mt-3'],
+                        servicesSnapshot: [
+                            { name: 'Troca de Óleo e Filtro', price: 65.00, duration: 30 },
+                            { name: 'Limpeza e Lubrificação de Relação', price: 45.00, duration: 30 }
+                        ],
+                        totalPrice: 110.00,
+                        totalDuration: 60,
+                        notes: 'Corrente fazendo estalo ao reduzir marcha, verificar esticador.',
+                        status: 'Em Manutenção / No Box',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 'os-mt-102',
+                        osNumber: 'OS-102',
+                        clientName: 'Diego Santos',
+                        clientPhone: '(84) 99855-7788',
+                        motoModel: 'Honda CB 300F Twister 2024',
+                        motoPlate: 'QWE-9J88',
+                        motoKm: '9200',
+                        date: today,
+                        time: '14:00',
+                        serviceIds: ['mt-6', 'mt-5'],
+                        servicesSnapshot: [
+                            { name: 'Diagnóstico via Scanner Eletrônico', price: 80.00, duration: 40 },
+                            { name: 'Limpeza de Bico Injetor / TBI', price: 110.00, duration: 60 }
+                        ],
+                        totalPrice: 190.00,
+                        totalDuration: 100,
+                        notes: 'Luz da injeção piscando ocasionalmente pela manhã.',
+                        status: 'Agendado',
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+                saveBookingsToStorage();
+            }
+
+            if (savedBlocks) {
+                state.blocks = JSON.parse(savedBlocks);
+            } else {
+                state.blocks = [];
+                saveBlocksToStorage();
+            }
+
+            if (sessionStorage.getItem(STORAGE_KEYS.ADMIN_AUTH) === 'true') {
+                state.isAdminLogged = true;
+            }
+        }
+
+        function saveServicesToStorage() {
+            localStorage.setItem(STORAGE_KEYS.SERVICES, JSON.stringify(state.services));
+        }
+
+        function saveBookingsToStorage() {
+            localStorage.setItem(STORAGE_KEYS.BOOKINGS, JSON.stringify(state.bookings));
+        }
+
+        function saveBlocksToStorage() {
+            localStorage.setItem(STORAGE_KEYS.BLOCKS, JSON.stringify(state.blocks));
+        }
+
+        /**
+         * ===================================================================
+         * NAVEGAÇÃO ENTRE ABAS PRINCIPAIS
+         * ===================================================================
+         */
+        function switchTab(tabName) {
+            ['agendar', 'meus', 'admin'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+            });
+            document.getElementById(`view-${tabName}`).classList.remove('hidden');
+
+            // Atualiza botões Desktop
+            document.querySelectorAll('.nav-desk-btn').forEach(btn => {
+                btn.classList.remove('bg-graphite', 'text-racingOrange-light', 'border', 'border-slate-700');
+                btn.classList.add('text-slateMuted', 'hover:text-slateLight');
+            });
+            const activeDesk = document.getElementById(`nav-desk-${tabName}`);
+            if (activeDesk) {
+                activeDesk.classList.add('bg-graphite', 'text-racingOrange-light', 'border', 'border-slate-700');
+                activeDesk.classList.remove('text-slateMuted', 'hover:text-slateLight');
+            }
+
+            // Atualiza botões Mobile
+            document.querySelectorAll('.nav-mob-btn').forEach(btn => {
+                btn.classList.remove('text-racingOrange-light', 'font-bold');
+                btn.classList.add('text-slateMuted', 'font-medium');
+            });
+            const activeMob = document.getElementById(`nav-mob-${tabName}`);
+            if (activeMob) {
+                activeMob.classList.add('text-racingOrange-light', 'font-bold');
+                activeMob.classList.remove('text-slateMuted', 'font-medium');
+            }
+
+            updateComboBarVisibility(tabName);
+
+            if (tabName === 'agendar') {
+                renderCatalog();
+                renderTimeSlots();
+            } else if (tabName === 'admin') {
+                renderAdminView();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateComboBarVisibility(currentTab = 'agendar') {
+            const bar = document.getElementById('floating-combo-bar');
+            if (currentTab === 'agendar' && state.selectedServiceIds.length > 0) {
+                bar.classList.remove('hidden');
+            } else {
+                bar.classList.add('hidden');
+            }
+        }
+
+        /**
+         * ===================================================================
+         * ÁREA DO CLIENTE: CATÁLOGO DE SERVIÇOS E SELEÇÃO MÚLTIPLA
+         * ===================================================================
+         */
+        function filterCategory(category) {
+            state.currentCategoryFilter = category;
+            
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-racingOrange', 'text-white', 'font-bold');
+                btn.classList.add('text-slateMuted', 'hover:text-slateLight', 'font-semibold');
+            });
+            const activeBtn = document.getElementById(`cat-btn-${category}`);
+            activeBtn.classList.add('bg-racingOrange', 'text-white', 'font-bold');
+            activeBtn.classList.remove('text-slateMuted', 'hover:text-slateLight', 'font-semibold');
+
+            renderCatalog();
+        }
+
+        function renderCatalog() {
+            const grid = document.getElementById('services-catalog-grid');
+            const activeServices = state.services.filter(s => s.active);
+            
+            const filtered = state.currentCategoryFilter === 'todos'
+                ? activeServices
+                : activeServices.filter(s => s.category === state.currentCategoryFilter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-slateMuted text-sm">Nenhum serviço disponível nesta categoria no momento.</div>`;
+                return;
+            }
+
+            const categoryMeta = {
+                revisao: { label: 'Revisão & Óleo', icon: 'fa-oil-can', badge: 'bg-racingOrange-muted text-racingOrange-light' },
+                motor: { label: 'Motor, Injeção & Elétrica', icon: 'fa-gears', badge: 'bg-techCyan-muted text-techCyan' },
+                pneus: { label: 'Pneus & Suspensão', icon: 'fa-dharmachakra', badge: 'bg-emeraldReady-muted text-emeraldReady' }
+            };
+
+            grid.innerHTML = filtered.map(srv => {
+                const isSelected = state.selectedServiceIds.includes(srv.id);
+                const meta = categoryMeta[srv.category] || categoryMeta.revisao;
+
+                const cardBorder = isSelected 
+                    ? 'border-racingOrange ring-2 ring-racingOrange/30 bg-slate-800/80' 
+                    : 'border-slate-800 bg-graphite hover:border-slate-700';
+
+                return `
+                    <div onclick="toggleServiceSelection('${srv.id}')" class="rounded-3xl p-5 border transition-all cursor-pointer flex flex-col justify-between gap-4 select-none ${cardBorder}">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold ${meta.badge}">
+                                    <i class="fa-solid ${meta.icon}"></i> ${meta.label}
+                                </span>
+                                <span class="text-xs font-semibold text-slateMuted flex items-center gap-1">
+                                    <i class="fa-regular fa-clock"></i> ~${srv.duration} min
+                                </span>
+                            </div>
+                            <h4 class="text-lg sm:text-xl font-bold text-slateLight uppercase">${srv.name}</h4>
+                            <p class="text-xs text-slateMuted leading-relaxed">${srv.desc}</p>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+                            <div>
+                                <span class="block text-[10px] uppercase tracking-wider text-slateMuted font-semibold">A partir de</span>
+                                <span class="text-xl font-bold text-emeraldReady">${formatCurrency(srv.price)}</span>
+                            </div>
+                            <span class="px-3.5 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 ${isSelected ? 'bg-racingOrange text-white' : 'bg-asphalt text-slateLight border border-slate-700'}">
+                                ${isSelected ? '<i class="fa-solid fa-check"></i> Na OS' : '<i class="fa-solid fa-plus"></i> Incluir'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleServiceSelection(serviceId) {
+            const idx = state.selectedServiceIds.indexOf(serviceId);
+            if (idx > -1) {
+                state.selectedServiceIds.splice(idx, 1);
+            } else {
+                state.selectedServiceIds.push(serviceId);
+            }
+            renderCatalog();
+            updateBookingSummary();
+        }
+
+        function updateBookingSummary() {
+            const selectedObjs = state.services.filter(s => state.selectedServiceIds.includes(s.id));
+            const totalPrice = selectedObjs.reduce((acc, s) => acc + Number(s.price), 0);
+            const totalDuration = selectedObjs.reduce((acc, s) => acc + Number(s.duration), 0);
+
+            document.getElementById('combo-count-badge').textContent = selectedObjs.length;
+            document.getElementById('combo-duration-text').textContent = `${totalDuration} min estimados no box`;
+            document.getElementById('combo-price-text').textContent = `A partir de: ${formatCurrency(totalPrice)}`;
+            updateComboBarVisibility('agendar');
+
+            const srvText = selectedObjs.length > 0 
+                ? selectedObjs.map(s => s.name).join(' + ')
+                : 'Nenhum serviço selecionado';
+            
+            const dtText = (state.selectedDate && state.selectedTime)
+                ? `Entrada no Box: ${formatDateBR(state.selectedDate)} às ${state.selectedTime} (~${totalDuration} min)`
+                : 'Selecione data e horário acima';
+
+            document.getElementById('summary-services-text').textContent = srvText;
+            document.getElementById('summary-datetime-text').textContent = dtText;
+            document.getElementById('summary-total-price').textContent = formatCurrency(totalPrice);
+        }
+
+        function scrollToDateTime() {
+            document.getElementById('step-datetime').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /**
+         * ===================================================================
+         * ÁREA DO CLIENTE: DATA E HORÁRIOS DISPONÍVEIS
+         * ===================================================================
+         */
+        function initDatePicker() {
+            const dateInput = document.getElementById('booking-date');
+            const today = getTodayStr(0);
+            dateInput.min = today;
+            dateInput.value = today;
+            state.selectedDate = today;
+            updateSelectedDateLabel();
+            renderTimeSlots();
+        }
+
+        function setQuickDate(offsetDays) {
+            const targetDate = getTodayStr(offsetDays);
+            document.getElementById('booking-date').value
